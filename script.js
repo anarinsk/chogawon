@@ -19,27 +19,52 @@ var outerRadius = Math.min(width, height) / 2  - (mobileScreen ? 80 : 100),
 	innerRadius = outerRadius * 0.95,
 	pullOutSize = (mobileScreen? 20 : 50),
 	opacityDefault = 0.7, //default opacity of chords
-	opacityLow = 0.02; //hover opacity of those chords not hovered over
+	opacityLow = 0.1; //hover opacity of those chords not hovered over
 	
 ////////////////////////////////////////////////////////////
 ////////////////////////// Data ////////////////////////////
 ////////////////////////////////////////////////////////////
 
-var Names = ["X","Y","Z","","C","B","A",""];
+
+
+var respondents = 95, //Total number of respondents (i.e. the number that makes up the total group)
+	emptyPerc = 0.2, //What % of the circle should become empty
+	emptyStroke = Math.round(respondents*emptyPerc); 
+
+	var Names = ["전문직","공무원","사무직", "",//
+                 "예체능", "인문/사회","공학","자연과학", ""];
 
 var respondents = 95, //Total number of respondents (i.e. the number that makes up the total group)
 	emptyPerc = 0.4, //What % of the circle should become empty
 	emptyStroke = Math.round(respondents*emptyPerc); 
+
+var Names = ["전문직","공무원","사무직", "",//
+	"인문/사회","공학","자연과학", "예체능", ""
+	];
+
+var respondents = 95, //Total number of respondents (i.e. the number that makes up the total group)
+emptyPerc = 0.4, //What % of the circle should become empty
+emptyStroke = Math.round(respondents*emptyPerc); 
 var matrix = [
-	[0,0,0,0,10,5,15,0], //X
-	[0,0,0,0,5,15,20,0], //Y
-	[0,0,0,0,15,5,5,0], //Z
-	[0,0,0,0,0,0,0,emptyStroke], //Dummy stroke
-	[10,5,15,0,0,0,0,0], //C
-	[5,15,5,0,0,0,0,0], //B
-	[15,20,5,0,0,0,0,0], //A
-	[0,0,0,emptyStroke,0,0,0,0] //Dummy stroke
+[0,0,0,0,
+	10,5,15,0,0], //전문직 30
+[0,0,0,0,
+	5,15,20,0,0], //공무원 40
+[0,0,0,0,
+	15,5,5,0,0], //사무직 25
+[0,0,0,0,
+	0,0,0,emptyStroke], //Dummy stroke
+[10,5,15,0,
+	0,0,0,0,0], //C
+[5,15,5,0,
+	0,0,0,0,0], //B
+[15,20,5,0,
+	0,0,0,0,0], //A
+[0,0,0,emptyStroke,
+	0,0,0,0] //Dummy stroke
 ];
+
+
 //Calculate how far the Chord Diagram needs to be rotated clockwise to make the dummy
 //invisible chord center vertically
 var offset = (2 * Math.PI) * (emptyStroke/(respondents + emptyStroke))/4;
@@ -67,6 +92,11 @@ var path = stretchedChord()
 	.endAngle(endAngle)
 	.pullOutSize(pullOutSize);
 
+
+var fill = d3.scale.ordinal()
+    .domain(d3.range(Names.length))
+	.range(["#EDC951","#CC333F","#00A0B0"]); // Color scheme 
+	
 ////////////////////////////////////////////////////////////
 //////////////////// Draw outer Arcs ///////////////////////
 ////////////////////////////////////////////////////////////
@@ -112,13 +142,14 @@ g.append("text")
 ////////////////////////////////////////////////////////////
 //////////////////// Draw inner chords /////////////////////
 ////////////////////////////////////////////////////////////
- 
+
 var chords = wrapper.selectAll("path.chord")
 	.data(chord.chords)
 	.enter().append("path")
 	.attr("class", "chord")
 	.style("stroke", "none")
-	.style("fill", "#C4C4C4")
+	//.style("fill", "#C4C4C4")
+	.style("fill", function(d,i) { return fill(d.target.index); })	
 	.style("opacity", function(d) { return (Names[d.source.index] === "" ? 0 : opacityDefault); }) //Make the dummy strokes have a zero opacity (invisible)
 	.style("pointer-events", function(d,i) { return (Names[d.source.index] === "" ? "none" : "auto"); }) //Remove pointer events from dummy strokes
 	.attr("d", path);	

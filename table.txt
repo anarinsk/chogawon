@@ -1,0 +1,36 @@
+var Names = ["공무원","전문직","기타","",//
+			 "경제/경영","공학","인문/사회","법", "의학", ""];
+
+var respondents = 145, //Total number of respondents (i.e. the number that makes up the total group)
+	emptyPerc = 0.4, //What % of the circle should become empty
+	emptyStroke = Math.round(respondents*emptyPerc); 
+var matrix = [
+	[0,0,0,0,10,5,15,0], //경제/경영 30
+	[0,0,0,0,5,15,20,0], //공학 40
+	[0,0,0,0,15,5,5,0], //인문/사회 25
+	[0,0,0,0,15,5,5,0], //법 25
+	[0,0,0,0,15,5,5,0], //의학 25
+	[0,0,0,0,0,0,0,0,0,emptyStroke], //Dummy stroke
+	[10, 5,15,15,15,0,0,0,0], //기타
+	[ 5,15, 5, 5, 5,0,0,0,0], //전문직
+	[15,20, 5, 5, 5,0,0,0,0], //공무원
+	[0,0,0,0,0,emptyStroke,0,0,0,0] //Dummy stroke
+];
+
+var Names = ["전문직","공무원","사무직", "",//
+             "인문/사회","공학","자연과학", ""
+             ];
+
+var respondents = 95, //Total number of respondents (i.e. the number that makes up the total group)
+	emptyPerc = 0.4, //What % of the circle should become empty
+	emptyStroke = Math.round(respondents*emptyPerc); 
+var matrix = [
+	[0,0,0,0,10,5,15,0], //전문직 30
+	[0,0,0,0,5,15,20,0], //공무원 40
+	[0,0,0,0,15,5,5,0], //사무직 25
+	//[0,0,0,0,0,0,0,emptyStroke], //Dummy stroke
+	[10,5,15,0,0,0,0,0], //C
+	[5,15,5,0,0,0,0,0], //B
+	[15,20,5,0,0,0,0,0], //A
+	//[0,0,0,emptyStroke,0,0,0,0] //Dummy stroke
+];
